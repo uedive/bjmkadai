@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { fetchPrefectures } from '../../lib/api';
+import PopulationChart from './SojinkoChart';
+import SojinkoTable from './SojinkoTable';
+import { fetchPrefectures, fetchPopulationComPosition } from '../../lib/api';
 
 function Sojinko(/*props*/) {
     const [prefectures, setPrefectures] = useState([]);
     const [checkedItems, setCheckedItems] = useState({}); // チェック状態を管理するオブジェクト
+    const [populationData, setPopulationData] = useState([]);
 
     useEffect(() => {
         const fetch = async () => {
@@ -13,7 +16,7 @@ function Sojinko(/*props*/) {
         fetch();
         const initialCheckedItems = {};
         prefectures.forEach(prefecture => {
-                initialCheckedItems[prefecture.prefCode] = false;
+            initialCheckedItems[prefecture.prefCode] = false;
         });
         setCheckedItems(initialCheckedItems);
     }, []);
@@ -27,10 +30,14 @@ function Sojinko(/*props*/) {
     };
 
     // 表示ボタンを押下した際に呼ばれる関数
-    function displayButtonOn() {
-        console.log(checkedItems);
+    async function displayButtonOn() {
+        const result = await fetchPopulationComPosition(13);
+        setPopulationData(result.data[0]);
     };
 
+    
+
+      
     return (
         <div className="sojinko">
             <h1>都道府県のID</h1>
@@ -52,7 +59,8 @@ function Sojinko(/*props*/) {
                 onClick={displayButtonOn}
             >表示</button>
 
-            
+            <PopulationChart populationData={populationData} />
+            <SojinkoTable populationData={populationData} />
         </div>
     );
 }
