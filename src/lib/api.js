@@ -7,7 +7,7 @@ const PREFECTURES_ENDPOINT = '/api/v1/prefectures';
 const api = axios.create({
   baseURL: API_URL,
   headers: {
-    'X-API-KEY': 'QSFotIcVzYcktMijfSwuaiuLgUSXcUPIJITARZ7p',
+    'X-API-KEY': process.env.REACT_APP_API_KEY,
     'Content-Type': 'application/json',
   },
 });
