@@ -1,24 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import PopulationChart from './SojinkoChart';
 import SojinkoTable from './SojinkoTable';
 import { fetchPrefectures, fetchPopulationComPosition } from '../../lib/api';
 
-function Sojinko(/*props*/) {
+function Sojinko() {
     const [prefectures, setPrefectures] = useState([]);
-    const [checkedItems, setCheckedItems] = useState({}); // チェック状態を管理するオブジェクト
+    const [checkedItems, setCheckedItems] = useState({});
     const [populationData, setPopulationData] = useState([]);
 
     useEffect(() => {
         const fetch = async () => {
+            //都道府県情報を取得する
             const result = await fetchPrefectures();
             setPrefectures(result);
+            
+            //チェックボックスの状態を完了するオブジェクトを初期化する
+            const initialCheckedItems = {};
+            result.forEach(prefecture => {
+                initialCheckedItems[prefecture.prefCode] = false;
+            });
+            setCheckedItems(initialCheckedItems);
+
+            //人口状態のオブジェクトを初期化する
+            setPopulationData([]);
         };
         fetch();
-        const initialCheckedItems = {};
-        prefectures.forEach(prefecture => {
-            initialCheckedItems[prefecture.prefCode] = false;
-        });
-        setCheckedItems(initialCheckedItems);
     }, []);
 
     // チェックボックスがクリックされたときに呼び出されるハンドラー関数
@@ -31,36 +36,39 @@ function Sojinko(/*props*/) {
 
     // 表示ボタンを押下した際に呼ばれる関数
     async function displayButtonOn() {
-        const result = await fetchPopulationComPosition(13);
-        setPopulationData(result.data[0]);
+        for (const key in checkedItems) {
+            if(checkedItems[key]){
+                const result = await fetchPopulationComPosition(key);
+                setPopulationData(result.data);
+                break;
+            }
+        }
     };
 
-    
-
-      
     return (
         <div className="sojinko">
-            <h1>都道府県のID</h1>
-            <div class="flex flex-wrap" id="prefCds" multiple>
+            <div className="flex flex-wrap" id="prefCds" multiple>
                 {prefectures.map((prefecture) => (
-                    <div class="p-1">
+                    <div className="p-1" key={prefecture.prefCode}>
                          <input
                             type="checkbox"
                             name={prefecture.prefCode}
                             checked={checkedItems[prefecture.prefCode]}
                             onChange={handleCheckboxChange}
                         />
-                        <label for={"pref"+prefecture.prefCode}>{prefecture.prefName}</label>
+                        <label htmlFor={"pref"+prefecture.prefCode}>{prefecture.prefName}</label>
                     </div>
                 ))}
             </div>
             <button 
-                class="my-btn"
+                className="my-btn"
                 onClick={displayButtonOn}
-            >表示</button>
+            >
+                表示
+            </button>
 
-            <PopulationChart populationData={populationData} />
             <SojinkoTable populationData={populationData} />
+                    
         </div>
     );
 }
