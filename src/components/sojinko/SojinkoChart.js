@@ -23,26 +23,13 @@ ChartJS.register(
   
 const options = {
     scales: {
-        xAxes: [
-        {
-            ticks: {
-            fontColor: '#ccc',
-            fontSize: 14
-            }
+        x: {
+            type: 'linear'
+        },
+        y: {
+            type: 'linear',
+            stacked: true
         }
-        ],
-        yAxes: [
-        {
-            ticks: {
-                fontColor: '#ccc',
-                fontSize: 14,
-                beginAtZero: true
-            },
-            gridLines: {
-                color: '#ccc'
-            }
-        }
-        ]
     },
     legend: {
         labels: {
@@ -53,35 +40,51 @@ const options = {
     elements: {
         point: {
             radius: 0
-        }
+        },
     }
 };
 
 const PopulationChart = ({ populationData }) => {
 
-    if(populationData.length == 0){
+    if(populationData.length === 0){
         return (
-            <div>
-                
-            </div>
+            <div></div>
         );
     }
 
-    const labels = populationData.data.map(item => item.year);
-    const data = populationData.data.map(item => item.value);
-
-    console.log(labels);
+    const labels = populationData[0].data.map(item => item.year);
+    const nensyoData = populationData[1].data.map(item => item.value);
+    const seisanData = populationData[2].data.map(item => item.value);
+    const ronenData = populationData[3].data.map(item => item.value);
     
     const chartdata = {
         labels: labels, // X軸のラベル（年）
         datasets: [
             {
-                label: '総人口',
-                data: data, // Y軸のデータ（人口数）
-                fill: false,
-                borderColor: 'rgb(75, 192, 192)',
+                label: '年少人口',
+                data: nensyoData, // Y軸のデータ（人口数）
+                fill: 0,
+                borderColor: 'rgb(192, 192, 74)',
+                backgroundColor: "rgba(158,72,14,1)",
+                tension: 0.1
+            },
+            {
+                label: '生産年齢人口',
+                data: seisanData, // Y軸のデータ（人口数）
+                fill: 0,
+                borderColor: 'rgb(192, 150, 74)',
+                backgroundColor: "rgba(158,100,14,1)",
+                tension: 0.1
+            },
+            {
+                label: '老年人口',
+                data: ronenData, // Y軸のデータ（人口数）
+                fill: 0,
+                borderColor: 'rgb(192, 120, 74)',
+                backgroundColor: "rgba(158,130,14,1)",
                 tension: 0.1
             }
+
         ]
     };
 

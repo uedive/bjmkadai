@@ -21,6 +21,18 @@ code {
     @apply container mx-auto
   }
   .my-btn{
-      @apply rounded text-center border p-1 bg-blue-500 border-blue-600 text-white
+    @apply rounded text-center border p-1 bg-blue-500 border-blue-600 text-white
+  }
+
+  .main-table{
+    @apply text-center table-auto mx-auto border-collapse border border-slate-300 my-2
+  }
+
+  .main-table th, td{
+    @apply p-2 border border-slate-300
+  }
+
+  .main-table th{
+    @apply bg-green-300
   }
 }
