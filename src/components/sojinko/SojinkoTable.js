@@ -4,9 +4,7 @@ const PopulationTable = ({ populationData }) => {
 
     if(populationData.length === 0){
         return (
-            <div>
-                
-            </div>
+            <div></div>
         );
     }
     
@@ -15,26 +13,31 @@ const PopulationTable = ({ populationData }) => {
     const seisanData = populationData[2].data.map(item => item);
     const ronenData = populationData[3].data.map(item => item);
 
+    const sortedSojinkoData = sojinkoData.sort((a, b) => b.year - a.year);
+    const sortedNensyoData = nensyoData.sort((a, b) => b.year - a.year);
+    const sortedSeisanData = seisanData.sort((a, b) => b.year - a.year);
+    const sortedRonenData = ronenData.sort((a, b) => b.year - a.year);
+
     /*
         総人口～老年人口データはすべて同じ長さであることを前提に動作させる
     */
-    const listItems = sojinkoData.map((item, index) => {
+    const listItems = sortedSojinkoData.map((item, index) => {
 
-        const prevItem = sojinkoData[index - 1];
+        const prevItem = sortedSojinkoData[index + 1];
 
-        const increaseRate = prevItem ? ((prevItem.value - item.value) / item.value) * 100 : null;
+        const increaseRate = prevItem ? ((item.value - prevItem.value) / item.value) * 100 : null;
         
         return (
           <tr key={index}>
             <td>{item.year}</td>
             <td>{item.value.toLocaleString()}</td>
-            <td>{increaseRate && <span>{increaseRate.toFixed(1)}%</span>}</td>
-            <td>{nensyoData[index].value.toLocaleString()}</td>
-            <td>{nensyoData[index].rate}%</td>
-            <td>{seisanData[index].value.toLocaleString()}</td>
-            <td>{seisanData[index].rate}%</td>
-            <td>{ronenData[index].value.toLocaleString()}</td>
-            <td>{ronenData[index].rate}%</td>
+            <td className={increaseRate > 0 ? "text-blue-500" : "text-red-500"}>{increaseRate && <span>{increaseRate.toFixed(1)}%</span>}</td>
+            <td>{sortedNensyoData[index].value.toLocaleString()}</td>
+            <td>{sortedNensyoData[index].rate}%</td>
+            <td>{sortedSeisanData[index].value.toLocaleString()}</td>
+            <td>{sortedSeisanData[index].rate}%</td>
+            <td>{sortedRonenData[index].value.toLocaleString()}</td>
+            <td>{sortedRonenData[index].rate}%</td>
           </tr>
         );
     });

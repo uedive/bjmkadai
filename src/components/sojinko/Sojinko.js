@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import SojinkoChart from './SojinkoChart';
 import SojinkoTable from './SojinkoTable';
 import { fetchPrefectures, fetchPopulationComPosition } from '../../lib/api';
 
@@ -55,6 +56,7 @@ function Sojinko() {
                             name={prefecture.prefCode}
                             checked={checkedItems[prefecture.prefCode]}
                             onChange={handleCheckboxChange}
+                            id={"pref"+prefecture.prefCode}
                         />
                         <label htmlFor={"pref"+prefecture.prefCode}>{prefecture.prefName}</label>
                     </div>
@@ -66,6 +68,8 @@ function Sojinko() {
             >
                 表示
             </button>
+
+            <SojinkoChart populationData={populationData} />
 
             <SojinkoTable populationData={populationData} />
                     

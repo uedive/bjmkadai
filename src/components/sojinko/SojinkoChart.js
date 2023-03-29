@@ -1,6 +1,7 @@
 import React from 'react';
 import {
     Chart as ChartJS,
+    Filler,
     CategoryScale,
     LinearScale,
     PointElement,
@@ -20,6 +21,8 @@ ChartJS.register(
     Tooltip,
     Legend
 );
+
+ChartJS.register(Filler);
   
 const options = {
     scales: {
@@ -52,7 +55,7 @@ const PopulationChart = ({ populationData }) => {
         );
     }
 
-    const labels = populationData[0].data.map(item => item.year);
+    const labels = populationData[0].data.map(item => String(item.year));
     const nensyoData = populationData[1].data.map(item => item.value);
     const seisanData = populationData[2].data.map(item => item.value);
     const ronenData = populationData[3].data.map(item => item.value);
@@ -63,7 +66,7 @@ const PopulationChart = ({ populationData }) => {
             {
                 label: '年少人口',
                 data: nensyoData, // Y軸のデータ（人口数）
-                fill: 0,
+                fill: true,
                 borderColor: 'rgb(192, 192, 74)',
                 backgroundColor: "rgba(158,72,14,1)",
                 tension: 0.1
@@ -71,7 +74,7 @@ const PopulationChart = ({ populationData }) => {
             {
                 label: '生産年齢人口',
                 data: seisanData, // Y軸のデータ（人口数）
-                fill: 0,
+                fill: true,
                 borderColor: 'rgb(192, 150, 74)',
                 backgroundColor: "rgba(158,100,14,1)",
                 tension: 0.1
@@ -79,7 +82,7 @@ const PopulationChart = ({ populationData }) => {
             {
                 label: '老年人口',
                 data: ronenData, // Y軸のデータ（人口数）
-                fill: 0,
+                fill: true,
                 borderColor: 'rgb(192, 120, 74)',
                 backgroundColor: "rgba(158,130,14,1)",
                 tension: 0.1
