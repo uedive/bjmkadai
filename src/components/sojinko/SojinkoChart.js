@@ -27,7 +27,12 @@ ChartJS.register(Filler);
 const options = {
     scales: {
         x: {
-            type: 'linear'
+            type: 'linear',
+            ticks: {
+                callback: function(value, index, values) {
+                    return value.toLocaleString(); // カンマ区切りしない形式に変更する
+                }
+            }
         },
         y: {
             type: 'linear',
@@ -49,17 +54,22 @@ const options = {
 
 const PopulationChart = ({ populationData }) => {
 
+    //人口構成データが取得されていない場合は表示させない
     if(populationData.length === 0){
         return (
             <div></div>
         );
     }
 
+    //チャート用のラベル情報を取得（すべての人口情報で西暦が一致している前提）
     const labels = populationData[0].data.map(item => String(item.year));
+
+    //チャート表示用のデータを作成
     const nensyoData = populationData[1].data.map(item => item.value);
     const seisanData = populationData[2].data.map(item => item.value);
     const ronenData = populationData[3].data.map(item => item.value);
     
+
     const chartdata = {
         labels: labels, // X軸のラベル（年）
         datasets: [
@@ -67,24 +77,24 @@ const PopulationChart = ({ populationData }) => {
                 label: '年少人口',
                 data: nensyoData, // Y軸のデータ（人口数）
                 fill: true,
-                borderColor: 'rgb(192, 192, 74)',
-                backgroundColor: "rgba(158,72,14,1)",
+                borderColor: 'rgb(255, 152, 150)',
+                backgroundColor: "rgba(255, 152, 150, 0.8)",
                 tension: 0.1
             },
             {
                 label: '生産年齢人口',
                 data: seisanData, // Y軸のデータ（人口数）
                 fill: true,
-                borderColor: 'rgb(192, 150, 74)',
-                backgroundColor: "rgba(158,100,14,1)",
+                borderColor: ' rgb(174, 199, 232)',
+                backgroundColor: " rgba(174, 199, 232, 0.8)",
                 tension: 0.1
             },
             {
                 label: '老年人口',
                 data: ronenData, // Y軸のデータ（人口数）
                 fill: true,
-                borderColor: 'rgb(192, 120, 74)',
-                backgroundColor: "rgba(158,130,14,1)",
+                borderColor: 'rgb(152, 223, 138)',
+                backgroundColor: "rgba(152, 223, 138, 0.8)",
                 tension: 0.1
             }
 

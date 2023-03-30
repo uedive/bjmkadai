@@ -4,8 +4,10 @@ import SojinkoTable from './SojinkoTable';
 import { fetchPrefectures, fetchPopulationComPosition } from '../../lib/api';
 
 function Sojinko() {
+    //都道府県情報を管理
     const [prefectures, setPrefectures] = useState([]);
-    const [checkedItems, setCheckedItems] = useState({});
+    //都道府県のチェック状況の管理
+    const [selectedItems, setSelectedItems] = useState({});
     const [populationData, setPopulationData] = useState([]);
 
     useEffect(() => {
@@ -15,11 +17,11 @@ function Sojinko() {
             setPrefectures(result);
             
             //チェックボックスの状態を完了するオブジェクトを初期化する
-            const initialCheckedItems = {};
+            const initialSelectedItems = {};
             result.forEach(prefecture => {
-                initialCheckedItems[prefecture.prefCode] = false;
+                initialSelectedItems[prefecture.prefCode] = false;
             });
-            setCheckedItems(initialCheckedItems);
+            setSelectedItems(initialSelectedItems);
 
             //人口状態のオブジェクトを初期化する
             setPopulationData([]);
@@ -28,22 +30,9 @@ function Sojinko() {
     }, []);
 
     // チェックボックスがクリックされたときに呼び出されるハンドラー関数
-    const handleCheckboxChange = event => {
-        setCheckedItems({
-            ...checkedItems,
-            [event.target.name]: event.target.checked
-        });
-    };
-
-    // 表示ボタンを押下した際に呼ばれる関数
-    async function displayButtonOn() {
-        for (const key in checkedItems) {
-            if(checkedItems[key]){
-                const result = await fetchPopulationComPosition(key);
-                setPopulationData(result.data);
-                break;
-            }
-        }
+    const handleCheckboxChange = async event => {
+        const result = await fetchPopulationComPosition(event.target.value);
+        setPopulationData(result.data);
     };
 
     return (
@@ -52,9 +41,10 @@ function Sojinko() {
                 {prefectures.map((prefecture) => (
                     <div className="p-1" key={prefecture.prefCode}>
                          <input
-                            type="checkbox"
-                            name={prefecture.prefCode}
-                            checked={checkedItems[prefecture.prefCode]}
+                            type="radio"
+                            value={prefecture.prefCode}
+                            name="pref-radio"
+                            selected={selectedItems[prefecture.prefCode]}
                             onChange={handleCheckboxChange}
                             id={"pref"+prefecture.prefCode}
                         />
@@ -62,12 +52,6 @@ function Sojinko() {
                     </div>
                 ))}
             </div>
-            <button 
-                className="my-btn"
-                onClick={displayButtonOn}
-            >
-                表示
-            </button>
 
             <SojinkoChart populationData={populationData} />
 
