@@ -25,12 +25,14 @@ ChartJS.register(
 ChartJS.register(Filler);
   
 const options = {
+    responsive: true,
     scales: {
         x: {
             type: 'linear',
             ticks: {
-                callback: function(value, index, values) {
-                    return value.toLocaleString(); // カンマ区切りしない形式に変更する
+                stepSize: 5,
+                callback: function(value, index, ticks) {
+                    return value;
                 }
             }
         },
@@ -68,7 +70,6 @@ const PopulationChart = ({ populationData }) => {
     const nensyoData = populationData[1].data.map(item => item.value);
     const seisanData = populationData[2].data.map(item => item.value);
     const ronenData = populationData[3].data.map(item => item.value);
-    
 
     const chartdata = {
         labels: labels, // X軸のラベル（年）

@@ -18,10 +18,11 @@ code {
 
 @layer components{
   .sojinko{
-    @apply container mx-auto
+    @apply container max-w-screen-md mx-auto
   }
-  .my-btn{
-    @apply rounded text-center border p-1 bg-blue-500 border-blue-600 text-white
+
+  tr:nth-child(even) {
+    @apply bg-slate-200
   }
 
   .main-table{
@@ -33,6 +34,10 @@ code {
   }
 
   .main-table th{
-    background-color: rgb(152, 223, 138);
+    @apply bg-slate-400 text-white;
+  }
+
+  h2{
+    @apply text-lg font-black my-1
   }
 }

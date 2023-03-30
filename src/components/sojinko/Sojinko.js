@@ -37,6 +37,8 @@ function Sojinko() {
 
     return (
         <div className="sojinko">
+            <h2>&lt;都道府県を選択&gt;</h2>
+            <p className='text-gray-400 text-sm'>選択するとグラフと表が表示されます。</p>
             <div className="flex flex-wrap" id="prefCds" multiple>
                 {prefectures.map((prefecture) => (
                     <div className="p-1" key={prefecture.prefCode}>
@@ -53,6 +55,7 @@ function Sojinko() {
                 ))}
             </div>
 
+            <h2>&lt;出力エリア&gt;</h2>
             <SojinkoChart populationData={populationData} />
 
             <SojinkoTable populationData={populationData} />
