@@ -14,17 +14,23 @@ function Sojinko() {
         const fetch = async () => {
             //都道府県情報を取得する
             const result = await fetchPrefectures();
-            setPrefectures(result);
+
+            if(result != null){
+                setPrefectures(result);
             
-            //チェックボックスの状態を完了するオブジェクトを初期化する
-            const initialSelectedItems = {};
-            result.forEach(prefecture => {
-                initialSelectedItems[prefecture.prefCode] = false;
-            });
-            setSelectedItems(initialSelectedItems);
+                //チェックボックスの状態を完了するオブジェクトを初期化する
+                const initialSelectedItems = {};
+                result.forEach(prefecture => {
+                    initialSelectedItems[prefecture.prefCode] = false;
+                });
+                setSelectedItems(initialSelectedItems);
+            }else{
+                setSelectedItems([]);
+            }
 
             //人口状態のオブジェクトを初期化する
             setPopulationData([]);
+            
         };
         fetch();
     }, []);

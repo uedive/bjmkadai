@@ -13,6 +13,7 @@ const PopulationTable = ({ populationData }) => {
     const seisanData = populationData[2].data.map(item => item);
     const ronenData = populationData[3].data.map(item => item);
 
+    //西暦を降順でソート
     const sortedSojinkoData = sojinkoData.sort((a, b) => b.year - a.year);
     const sortedNensyoData = nensyoData.sort((a, b) => b.year - a.year);
     const sortedSeisanData = seisanData.sort((a, b) => b.year - a.year);
